@@ -1,6 +1,14 @@
+import traceback
 from flask import Flask, render_template, request
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    if isinstance(e, HTTPException):
+        return e
+    return f"<h3>Wait! An Internal Server Error occurred!</h3><br><b>Here's the technical error to copy/paste to me:</b><br><br><pre>{traceback.format_exc()}</pre>", 500
 
 # Base average delivery time (you can adjust this)
 avg_time = 30  
