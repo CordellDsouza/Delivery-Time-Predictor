@@ -8,7 +8,7 @@ avg_time = 30
 @app.route("/")
 @app.route("/delivery-time-predictor")
 def home():
-    return render_template("index.html")
+    return render_template("index.html", prediction_text=None)
 
 @app.route("/predict", methods=["POST"])
 def predict():

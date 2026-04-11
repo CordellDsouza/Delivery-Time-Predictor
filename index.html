@@ -51,8 +51,7 @@
             <!-- Show Result if exists -->
             {% if prediction_text %}
             <div class="result fade-in {% if 'Invalid' in prediction_text %}error{% endif %}">
-                <i class='bx {% if ' Invalid' in prediction_text %}bx-error-circle{% else %}bxs-time-five{% endif
-                    %}'></i>
+                <i class='bx {% if 'Invalid' in prediction_text %}bx-error-circle{% else %}bxs-time-five{% endif %}'></i>
                 <span>{{ prediction_text }}</span>
             </div>
             {% endif %}
