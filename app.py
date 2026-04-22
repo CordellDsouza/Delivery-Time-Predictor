@@ -134,14 +134,12 @@ def predict():
         vehicle    = request.form.get("vehicle", "motorcycle")
         traffic    = request.form.get("traffic", "medium")
         city       = request.form.get("city", "urban")
-        is_festival = request.form.get("festival") == "yes"
 
         # ── Factor lookup (default to 0 if unknown) ─────────────────────────
         weather_add  = WEATHER_FACTORS.get(weather, 0)
         vehicle_add  = VEHICLE_FACTORS.get(vehicle, 0)
         traffic_add  = TRAFFIC_FACTORS.get(traffic, 0)
         city_add     = CITY_FACTORS.get(city, 0)
-        festival_add = FESTIVAL_FACTOR if is_festival else 0
 
         DISTANCE_FACTOR = 5
         RATING_FACTOR   = 2
@@ -155,30 +153,28 @@ def predict():
             + vehicle_add
             + traffic_add
             + city_add
-            + festival_add
         )
         predicted_time = max(predicted_time, 5)   # at least 5 minutes
 
-        # Normal-day time (same inputs but no festival penalty)
-        normal_time  = predicted_time - festival_add
-        festival_time = normal_time + FESTIVAL_FACTOR
+        # Both times for chart comparison
+        normal_time   = predicted_time
+        festival_time  = normal_time + FESTIVAL_FACTOR
 
         # ── Format output ───────────────────────────────────────────────────
         def fmt_time(mins):
             mins = int(round(max(mins, 0)))
             if mins >= 60:
-                return f"{mins // 60} hr {mins % 60} mins"
+                return f"{mins // 60}hr + {mins % 60} mins"
             return f"{mins} mins"
 
         time_str = fmt_time(predicted_time)
-        label_prefix = "🎉 Festival Day" if is_festival else "📅 Normal Day"
 
         # ── Chart ───────────────────────────────────────────────────────────
         chart_data = generate_chart(normal_time, festival_time)
 
         return render_template(
             "index.html",
-            prediction_text=f"{label_prefix} — Estimated Delivery: {time_str}",
+            prediction_text=f"Estimated Delivery: {time_str}",
             chart_data=chart_data,
             chart_normal=f"{normal_time:.0f}",
             chart_festival=f"{festival_time:.0f}",
@@ -193,7 +189,6 @@ def predict():
             sel_city=city,
             sel_rating=rating,
             sel_distance=distance,
-            sel_festival="yes" if is_festival else "no",
         )
 
     except Exception:
