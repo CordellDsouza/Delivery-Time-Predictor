@@ -164,7 +164,7 @@ def predict():
         def fmt_time(mins):
             mins = int(round(max(mins, 0)))
             if mins >= 60:
-                return f"{mins // 60}hr + {mins % 60} mins"
+                return f"{mins // 60}hr+{mins % 60} mins"
             return f"{mins} mins"
 
         time_str = fmt_time(predicted_time)
