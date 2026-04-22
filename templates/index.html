@@ -103,6 +103,20 @@
                     </div>
                 </div>
 
+                <!-- Row 4: Festival Toggle -->
+                <div class="input-group festival-group">
+                    <label for="festival-toggle"><i class='bx bxs-party'></i> Festival / Holiday?</label>
+                    <div class="toggle-wrapper">
+                        <span class="toggle-label">No</span>
+                        <label class="switch">
+                            <input type="checkbox" id="festival-toggle" name="festival" value="yes"
+                                {% if sel_festival is defined and sel_festival == 'yes' %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                        <span class="toggle-label">Yes</span>
+                    </div>
+                </div>
+
                 <button type="submit" class="submit-btn" id="submit-btn">
                     <span class="btn-text">Predict Delivery Time</span>
                     <i class='bx bx-right-arrow-alt icon-arrow'></i>
